@@ -1,8 +1,5 @@
 /* ================================================================
    Zen Browser — Website Appearance Toggle
-   The button is a native toolbarbutton-1 — hover, sizing, and
-   alignment are all handled automatically.
-   We only hide the text label and ensure the icon uses context-fill.
    ================================================================ */
 
 /* Hide text label */
