@@ -38,7 +38,7 @@ The button can be placed anywhere: nav bar, sidebar, overflow menu — anywhere 
 
 ### Step 1 — Install fx-autoconfig
 
-fx-autoconfig is a small open-source loader by [MrOtherGuy](https://github.com/MrOtherGuy) that lets Zen/Firefox run your own JavaScript at startup.
+fx-autoconfig is a small open-source loader by [@MrOtherGuy](https://github.com/MrOtherGuy) that lets Zen/Firefox run your own JavaScript at startup.
 
 1. Go to [https://github.com/MrOtherGuy/fx-autoconfig](https://github.com/MrOtherGuy/fx-autoconfig)
 2. Click **Code → Download ZIP** and extract it somewhere
