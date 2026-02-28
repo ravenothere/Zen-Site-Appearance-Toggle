@@ -30,7 +30,7 @@ The button can be placed anywhere: nav bar, sidebar, overflow menu — anywhere 
 ## Requirements
 
 - [Zen Browser](https://zen-browser.app/) or [Firefox](https://www.firefox.com)
-- [fx-autoconfig](https://github.com/MrOtherGuy/fx-autoconfig) — lets Zen load `.uc.js` scripts (one-time setup, see below)
+- [fx-autoconfig](https://github.com/MrOtherGuy/fx-autoconfig) — lets Zen/Firefox load `.uc.js` scripts (one-time setup, see below)
 
 ---
 
