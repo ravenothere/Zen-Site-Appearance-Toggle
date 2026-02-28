@@ -1,6 +1,9 @@
 # Zen Site Appearance Toggle
 
-A toolbar button for [Zen Browser](https://zen-browser.app/) that toggles website dark/light mode with a single click — draggable anywhere in the toolbar like a native button.
+A toolbar button for [Zen Browser](https://zen-browser.app/) & [Firefox](https://www.firefox.com) that toggles website dark/light mode with a single click using the built-in color-scheme preference in the browser settings — draggable anywhere in the toolbar like any native button.
+
+<img src="images/zen-site-appearance-toggle-preview.png" width="75%" />
+<img src="images/zen-site-appearance-toggle-preview.gif" width="75%" />
 
 **How it works:** It detects your system color scheme and gives you a two-state toggle between automatic and the opposite.
 
