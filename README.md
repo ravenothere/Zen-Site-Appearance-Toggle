@@ -2,7 +2,14 @@
 
 A toolbar button for [Zen Browser](https://zen-browser.app/) & [Firefox](https://www.firefox.com) that toggles website dark/light mode with a single click using the built-in color-scheme preference in the browser settings — draggable anywhere in the toolbar like any native button.
 
-<img src="images/zen-site-appearance-toggle-preview.png" width="75%" />
+<img src="images/zen-site-appearance-toggle-preview-sparkle.png" width="75%" />
+
+✨Sparkle/Moon🌙 Variant ↑
+
+<img src="images/zen-site-appearance-toggle-preview-sun.png" width="75%" />
+
+☀️Sun/Moon🌙 Variant ↑
+
 <img src="images/zen-site-appearance-toggle-preview.gif" width="75%" />
 
 **How it works:** It detects your system color scheme and gives you a two-state toggle between automatic and the opposite.
@@ -85,7 +92,7 @@ This makes the button icon color automatically match your toolbar icons.
 
 ### Step 3 — Copy the toggle files
 
-- [**`zen-colorscheme-toggle.uc.js`**](chrome/JS/zen-colorscheme-toggle.uc.js) → copy into `chrome/JS/`
+- [**`zen-colorscheme-toggle-sparkle.uc.js`**](chrome/JS/zen-colorscheme-toggle-sparkle.uc.js) or [**`zen-colorscheme-toggle-sun.uc.js`**](chrome/JS/zen-colorscheme-toggle-sun.uc.js) → choose ONLY ONE FILE whichever icon variant you prefer and copy into `chrome/JS/`
 - [**`userChrome.css`**](chrome/userChrome.css) → if you already have a `userChrome.css`, paste the contents at the end of your existing file. If you don't have one yet, copy it directly into `chrome/`.
 
 ---
@@ -103,7 +110,7 @@ The toggle button will appear in your toolbar. To move it, right-click the toolb
 
 ## Uninstalling
 
-- Delete `zen-colorscheme-toggle.uc.js` from `chrome/JS/`
+- Delete `zen-colorscheme-toggle-sparkle.uc.js`/`zen-colorscheme-toggle-sun.uc.js` from `chrome/JS/`
 - Remove the toggle CSS from your `userChrome.css`
 - Clear startup cache once more
 
