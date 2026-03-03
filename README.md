@@ -2,17 +2,10 @@
 
 A toolbar button for [Zen Browser](https://zen-browser.app/) & [Firefox](https://www.firefox.com) that toggles website dark/light mode with a single click using the built-in color-scheme preference in the browser settings — draggable anywhere in the toolbar like any native button.
 
-<img src="images/zen-site-appearance-toggle-preview-sparkle.png" width="75%" />
-
-✨Sparkle/Moon🌙 Variant ↑
-
-<img src="images/zen-site-appearance-toggle-preview-sun.png" width="75%" />
-
-☀️Sun/Moon🌙 Variant ↑
-
+<img src="images/zen-site-appearance-toggle-preview.png" width="75%" />
 <img src="images/zen-site-appearance-toggle-preview.gif" width="75%" />
 
-**How it works:** It detects your system color scheme and gives you a two-state toggle between automatic and the opposite.
+**How it works:** It detects your system color scheme and gives you a two-state toggle between automatic and the opposite. The default light mode icon is ✨ sparkle — a ☀️ sun variant is also available.
 
 - **System is Light** → button shows ✨ sparkle → click forces Dark → button shows 🌙 moon → click resets to Auto (Light)
 - **System is Dark** → button shows 🌙 moon → click forces Light → button shows ✨ sparkle → click resets to Auto (Dark)
@@ -28,22 +21,39 @@ The button integrates natively into the Zen/Firefox toolbar — it respects hove
 | State | Icon | Tooltip |
 |-------|------|---------|
 | Websites are dark (auto or forced) | 🌙 Moon | "Switch to Light" |
-| Websites are light (auto or forced) | ✨ Sparkle | "Switch to Dark" |
+| Websites are light (auto or forced) | ✨ Sparkle (or ☀️ Sun) | "Switch to Dark" |
 
 The button can be placed anywhere: nav bar, sidebar, overflow menu — anywhere Firefox lets you drag toolbar items via **right-click → Customize Toolbar**.
 
 ---
 
-## Requirements
+## Installation
 
-- [Zen Browser](https://zen-browser.app/) or [Firefox](https://www.firefox.com)
-- [fx-autoconfig](https://github.com/MrOtherGuy/fx-autoconfig) — lets Zen/Firefox load `.uc.js` scripts (one-time setup, see below)
+### Method 1 — Sine (recommended)
+
+[Sine](https://github.com/CosmoCreeper/Sine) is a mod manager for Zen/Firefox that installs mods in one click. 
+
+If you already have Sine installed, 
+1. open Sine's settings.
+2. find "Add your own locally from a GitHub repo" and paste:
+`ravenothere/Zen-Site-Appearance-Toggle`
+3. click Install. Sine will handle everything automatically.
+
+Sine also lets you customize the icons from its settings panel. You can:
+
+- **Choose an icon set** — pick between *Original* (the custom icons made for this mod) or *Zen* (Zen Browser's own built-in icons)
+- **Choose your light mode icon** — pick between ✨ Sparkle or ☀️ Sun
+- **Override individual icons** — optionally mix and match, e.g. Zen's moon with the Original sparkle, or any other combination
+
+All changes apply instantly without restarting.
+
+> New to Sine? See the [Sine installation guide](https://github.com/CosmoCreeper/Sine#%EF%B8%8F-installation).
 
 ---
 
-## Installation
+### Method 2 — fx-autoconfig (manual)
 
-### Step 1 — Install fx-autoconfig
+#### Step 1 — Install fx-autoconfig
 
 fx-autoconfig is a small open-source loader by [@MrOtherGuy](https://github.com/MrOtherGuy) that lets Zen/Firefox run your own JavaScript at startup.
 
@@ -58,7 +68,7 @@ From the extracted ZIP, open the `program/` folder and copy both into your Zen i
 
 > ⚠️ Windows may prompt for admin permission — click Yes.
 
-> ⚠️ if you got a prompt that files already exist click Skip, you dont't have to replace it
+> ⚠️ If you get a prompt that files already exist, click Skip — you don't have to replace them.
 
 **Copy files into your profile's chrome folder:**
 
@@ -80,7 +90,7 @@ chrome/
 
 ---
 
-### Step 2 — Enable SVG context properties
+#### Step 2 — Enable SVG context properties
 
 In `about:config`, find and set to `true`:
 ```
@@ -90,14 +100,14 @@ This makes the button icon color automatically match your toolbar icons.
 
 ---
 
-### Step 3 — Copy the toggle files
+#### Step 3 — Copy the toggle files
 
-- [**`zen-colorscheme-toggle-sparkle.uc.js`**](chrome/JS/zen-colorscheme-toggle-sparkle.uc.js) or [**`zen-colorscheme-toggle-sun.uc.js`**](chrome/JS/zen-colorscheme-toggle-sun.uc.js) → choose ONLY ONE FILE whichever icon variant you prefer and copy into `chrome/JS/`
+- [**`zen-colorscheme-toggle-sparkle.uc.js`**](chrome/JS/zen-colorscheme-toggle-sparkle.uc.js) or [**`zen-colorscheme-toggle-sun.uc.js`**](chrome/JS/zen-colorscheme-toggle-sun.uc.js) → choose **only one** and copy it into `chrome/JS/`
 - [**`userChrome.css`**](chrome/userChrome.css) → if you already have a `userChrome.css`, paste the contents at the end of your existing file. If you don't have one yet, copy it directly into `chrome/`.
 
 ---
 
-### Step 4 — Clear startup cache & restart
+#### Step 4 — Clear startup cache & restart
 
 1. Open Zen Browser
 2. Go to `about:support`
@@ -110,11 +120,11 @@ The toggle button will appear in your toolbar. To move it, right-click the toolb
 
 ## Uninstalling
 
-- Delete `zen-colorscheme-toggle-sparkle.uc.js`/`zen-colorscheme-toggle-sun.uc.js` from `chrome/JS/`
+- Delete `zen-colorscheme-toggle-sparkle.uc.js` or `zen-colorscheme-toggle-sun.uc.js` from `chrome/JS/`
 - Remove the toggle CSS from your `userChrome.css`
 - Clear startup cache once more
 
-To fully remove fx-autoconfig: delete `config.js` and `defaults/` from Zen's install directory(if you didn't get a prompt that the files already exist), and delete `utils/`, `JS/`, and `resources/` from your `chrome/` folder.
+To fully remove fx-autoconfig: delete `config.js` and `defaults/` from Zen's install directory (if you didn't get a prompt that files already exist), and delete `utils/`, `JS/`, and `resources/` from your `chrome/` folder.
 
 ---
 
@@ -130,7 +140,7 @@ To fully remove fx-autoconfig: delete `config.js` and `defaults/` from Zen's ins
 
 ## How it works (technical)
 
-The script registers a proper Firefox toolbar widget using `UC_API.Utils.createWidget()` from fx-autoconfig, which is what allows it to be dragged to any toolbar position and appear in the Customize menu.
+The fx-autoconfig version registers a toolbar widget using `UC_API.Utils.createWidget()`, and the Sine version uses `CustomizableUI.createWidget()` directly — both allow the button to be dragged to any toolbar position and appear in the Customize menu.
 
 The icon is set as a data URI SVG on the button's existing `<image class="toolbarbutton-icon">` element, using `context-fill` so it inherits the toolbar icon color automatically. No extra DOM elements are added — hover, sizing, and alignment are handled natively by the toolbarbutton.
 
