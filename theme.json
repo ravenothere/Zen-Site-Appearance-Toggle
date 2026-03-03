@@ -1,0 +1,30 @@
+{
+  "id": "zen-site-appearance-toggle",
+  "name": "Zen Site Appearance Toggle",
+  "description": "A toolbar button that toggles website dark/light mode with a single click — draggable anywhere in the toolbar like a native button.",
+  "homepage": "https://github.com/ravenothere/Zen-Site-Appearance-Toggle",
+  "image": "https://raw.githubusercontent.com/ravenothere/Zen-Site-Appearance-Toggle/refs/heads/main/images/zen-site-appearance-toggle-preview.png",
+  "style": {
+    "chrome": "chrome/userChrome.css"
+  },
+  "scripts": {
+    "sine/JS/zen-colorscheme-toggle.uc.js": {
+      "name": "Zen Site Appearance Toggle",
+      "description": "Toggles website dark/light mode with a toolbar button",
+      "include": [
+        "chrome://browser/content/browser.xhtml"
+      ]
+    }
+  },
+  "preferences": "preferences.json",
+  "readme": "https://raw.githubusercontent.com/ravenothere/Zen-Site-Appearance-Toggle/main/README.md",
+  "author": "ravenothere",
+  "version": "1.0.0",
+  "tags": [
+    "Javascript",
+    "Toolbar"
+  ],
+  "createdAt": "2026-03-03",
+  "updatedAt": "2026-03-03",
+  "fork": ["zen"]
+}

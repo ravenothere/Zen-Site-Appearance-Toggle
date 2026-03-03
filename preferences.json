@@ -1,0 +1,107 @@
+[
+  {
+    "type": "dropdown",
+    "value": "number",
+    "property": "mod.zensiteappearancetoggle.iconset",
+    "label": "🎨 Icon set",
+    "defaultValue": 0,
+    "placeholder": false,
+    "options": [
+      {
+        "label": "Original",
+        "value": 0
+      },
+      {
+        "label": "Zen",
+        "value": 1
+      }
+    ]
+  },
+
+  {
+    "type": "dropdown",
+    "value": "number",
+    "property": "mod.zensiteappearancetoggle.lighticon",
+    "label": "☀️ Light mode icon",
+    "defaultValue": 0,
+    "placeholder": false,
+    "options": [
+      {
+        "label": "Sparkle",
+        "value": 0
+      },
+      {
+        "label": "Sun",
+        "value": 1
+      }
+    ]
+  },
+
+  {
+    "type": "separator",
+    "label": "🔧 Individual icon overrides (optional)",
+    "margin": "15px 0 15px 0"
+  },
+
+  {
+    "type": "text",
+    "label": "Override specific icons regardless of the icon set chosen above.",
+    "margin": "0 0 10px 0",
+    "size": "13px"
+  },
+
+  {
+    "type": "dropdown",
+    "value": "number",
+    "property": "mod.zensiteappearancetoggle.override.moon",
+    "label": "🌙 Moon icon",
+    "defaultValue": 0,
+    "placeholder": false,
+    "options": [
+      { "label": "Auto (follow set)", "value": 0 },
+      { "label": "Original",          "value": 1 },
+      { "label": "Zen",               "value": 2 }
+    ]
+  },
+
+  {
+    "type": "dropdown",
+    "value": "number",
+    "property": "mod.zensiteappearancetoggle.override.sparkle",
+    "label": "✨ Sparkle icon",
+    "defaultValue": 0,
+    "placeholder": false,
+    "options": [
+      { "label": "Auto (follow set)", "value": 0 },
+      { "label": "Original",          "value": 1 },
+      { "label": "Zen",               "value": 2 }
+    ]
+  },
+
+  {
+    "type": "dropdown",
+    "value": "number",
+    "property": "mod.zensiteappearancetoggle.override.sun",
+    "label": "☀️ Sun icon",
+    "defaultValue": 0,
+    "placeholder": false,
+    "options": [
+      { "label": "Auto (follow set)", "value": 0 },
+      { "label": "Original",          "value": 1 },
+      { "label": "Zen",               "value": 2 }
+    ]
+  },
+
+  {
+    "type": "separator",
+    "label": "",
+    "margin": "15px 0 15px 0"
+  },
+
+  {
+    "type": "checkbox",
+    "property": "svg.context-properties.content.enabled",
+    "label": "⚠️ Enable SVG context-fill (required for icons to match toolbar color — keep this enabled)",
+    "defaultValue": true
+  }
+]
