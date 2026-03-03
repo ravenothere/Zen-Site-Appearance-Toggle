@@ -139,6 +139,7 @@
       CustomizableUI.createWidget({
         id:          WIDGET_ID,
         type:        "button",
+        defaultArea: CustomizableUI.AREA_NAVBAR,
         label:       "Website Appearance",
         tooltiptext: "Toggle Website Appearance",
         onCreated(btn) {
