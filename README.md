@@ -34,10 +34,7 @@ The button can be placed anywhere: nav bar, sidebar, overflow menu — anywhere 
 [Sine](https://github.com/CosmoCreeper/Sine) is a mod manager for Zen/Firefox that installs mods in one click. 
 
 If you already have Sine installed, 
-1. open Sine's settings.
-2. find "Add your own locally from a GitHub repo" and paste:
-`ravenothere/Zen-Site-Appearance-Toggle`
-3. click Install. Sine will handle everything automatically.
+find this mod in the [Sine store](https://sineorg.github.io/store/) and install it directly — no manual file copying needed.
 
 Sine also lets you customize the icons from its settings panel. You can:
 
