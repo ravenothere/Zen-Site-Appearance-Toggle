@@ -1,31 +1,33 @@
 // ==UserScript==
 // @name           zen-colorscheme-toggle
-// @description    Two-state website appearance toggle. Moon = dark, Sparkle/Sun = light.
+// @description    Two-state website appearance toggle with per-workspace defaults.
+//                 Left-click to toggle. Right-click to set a default for the current workspace.
 //                 Drag it anywhere via the customize toolbar screen.
-//                 Sine-compatible version.
+// @author         ravenothere
+// @version        1.1.0
+// @grant          none
 // ==/UserScript==
+
 
 (function () {
   "use strict";
 
-  const PREF      = "layout.css.prefers-color-scheme.content-override";
-  const WIDGET_ID = "zen-colorscheme-toggle";
+  const PREF        = "layout.css.prefers-color-scheme.content-override";
+  const WIDGET_ID   = "zen-colorscheme-toggle";
+  const WS_MAP_PREF = "mod.zensiteappearancetoggle.workspacemap";
 
   const P = {
-    ICONSET:         "mod.zensiteappearancetoggle.iconset",
-    LIGHTICON:       "mod.zensiteappearancetoggle.lighticon",
-    OVERRIDE_MOON:   "mod.zensiteappearancetoggle.override.moon",
-    OVERRIDE_SPARKLE:"mod.zensiteappearancetoggle.override.sparkle",
-    OVERRIDE_SUN:    "mod.zensiteappearancetoggle.override.sun",
+    ICONSET:          "mod.zensiteappearancetoggle.iconset",
+    LIGHTICON:        "mod.zensiteappearancetoggle.lighticon",
+    OVERRIDE_MOON:    "mod.zensiteappearancetoggle.override.moon",
+    OVERRIDE_SPARKLE: "mod.zensiteappearancetoggle.override.sparkle",
+    OVERRIDE_SUN:     "mod.zensiteappearancetoggle.override.sun",
   };
-
-  // ── Icon sources ──────────────────────────────────────────────────────
 
   function makeSrc(svgContent) {
     return "data:image/svg+xml;utf8," + encodeURIComponent(svgContent);
   }
 
-  // Original icons
   const ORIG_MOON = makeSrc(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="context-fill" fill-opacity="context-fill-opacity">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>`);
@@ -48,26 +50,77 @@
     <rect x="10.75" y="1"  width="2.5" height="4" rx="1.25" ry="1.25" transform="rotate(315 12 12)"/>
   </svg>`);
 
-  // Zen built-in icons
   const ZEN_MOON    = "chrome://browser/skin/zen-icons/moon-stars.svg";
   const ZEN_SPARKLE = "chrome://browser/skin/zen-icons/sparkles.svg";
   const ZEN_SUN     = "chrome://browser/skin/zen-icons/face-sun.svg";
-
-  // ── Preference helpers ────────────────────────────────────────────────
 
   function getInt(key, def) {
     try { return Services.prefs.getIntPref(key, def); }
     catch { return def; }
   }
 
+  function getWorkspaceMap() {
+    try { return JSON.parse(Services.prefs.getStringPref(WS_MAP_PREF, "{}")); }
+    catch { return {}; }
+  }
+
+  function setWorkspaceMap(map) {
+    Services.prefs.setStringPref(WS_MAP_PREF, JSON.stringify(map));
+  }
+
+  function getActiveWorkspaceId() {
+    try { return gBrowser.selectedTab.getAttribute("zen-workspace-id") || null; }
+    catch { return null; }
+  }
+
+  function getWorkspaceDefault(uuid) {
+    if (!uuid) return 0;
+    return getWorkspaceMap()[uuid] ?? 0;
+  }
+
+  function setWorkspaceDefault(uuid, value) {
+    if (!uuid) return;
+    const map = getWorkspaceMap();
+    map[uuid] = value;
+    setWorkspaceMap(map);
+    _sessionState.set(uuid, value);
+  }
+
+  const _sessionState = new Map();
+
+  function getEffectiveState(uuid) {
+    if (_sessionState.has(uuid)) return _sessionState.get(uuid);
+    return getWorkspaceDefault(uuid);
+  }
+
+  function applyWorkspaceState(uuid) {
+    const state = getEffectiveState(uuid);
+    if (state === 1) {
+      Services.prefs.setIntPref(PREF, 1);
+    } else if (state === 2) {
+      Services.prefs.setIntPref(PREF, 0);
+    } else {
+      Services.prefs.setIntPref(PREF, 3);
+    }
+    refreshAll();
+  }
+
+  let _lastWorkspaceId = null;
+
+  function onTabSelect() {
+    const currentId = getActiveWorkspaceId();
+    if (currentId !== _lastWorkspaceId) {
+      _lastWorkspaceId = currentId;
+      applyWorkspaceState(currentId);
+    }
+  }
+
   // ── Icon resolution ───────────────────────────────────────────────────
-  // Priority: individual override > icon set
 
   function resolveIcon(overridePref, origIcon, zenIcon) {
     const override = getInt(overridePref, 0);
     if (override === 1) return origIcon;
     if (override === 2) return zenIcon;
-    // Auto — follow the icon set
     return getInt(P.ICONSET, 0) === 1 ? zenIcon : origIcon;
   }
 
@@ -76,15 +129,10 @@
   }
 
   function getLightSrc() {
-    const useSun = getInt(P.LIGHTICON, 0) === 1;
-    if (useSun) {
-      return resolveIcon(P.OVERRIDE_SUN, ORIG_SUN, ZEN_SUN);
-    } else {
-      return resolveIcon(P.OVERRIDE_SPARKLE, ORIG_SPARKLE, ZEN_SPARKLE);
-    }
+    return getInt(P.LIGHTICON, 0) === 1
+      ? resolveIcon(P.OVERRIDE_SUN, ORIG_SUN, ZEN_SUN)
+      : resolveIcon(P.OVERRIDE_SPARKLE, ORIG_SPARKLE, ZEN_SPARKLE);
   }
-
-  // ── State ─────────────────────────────────────────────────────────────
 
   function systemPrefersDark() {
     try { return window.matchMedia("(prefers-color-scheme: dark)").matches; }
@@ -113,8 +161,6 @@
     };
   }
 
-  // ── Refresh ───────────────────────────────────────────────────────────
-
   function refreshBtn(btn) {
     if (!btn) return;
     const s = getState();
@@ -130,35 +176,93 @@
     }
   }
 
+  // ── Context menu ──────────────────────────────────────────────────────
+
+  const WS_OPTIONS = [
+    { label: "Workspace: Auto",  value: 0, id: "zen-ws-item-auto"  },
+    { label: "Workspace: Dark",  value: 2, id: "zen-ws-item-dark"  },
+    { label: "Workspace: Light", value: 1, id: "zen-ws-item-light" },
+  ];
+
+  function setupContextMenu(btn, doc) {
+    const toolbarCtx = doc.getElementById("toolbar-context-menu");
+    if (!toolbarCtx) return;
+
+    const sep = doc.createXULElement("menuseparator");
+    sep.id = "zen-ws-sep";
+    sep.hidden = true;
+    toolbarCtx.appendChild(sep);
+
+    for (const opt of WS_OPTIONS) {
+      const item = doc.createXULElement("menuitem");
+      item.id = opt.id;
+      item.setAttribute("label", opt.label);
+      item.setAttribute("type", "radio");
+      item.setAttribute("name", "zen-ws-appearance");
+      item.setAttribute("checked", "false");
+      item.hidden = true;
+      item.addEventListener("command", () => {
+        const uuid = getActiveWorkspaceId();
+        setWorkspaceDefault(uuid, opt.value);
+        applyWorkspaceState(uuid);
+      });
+      toolbarCtx.appendChild(item);
+    }
+
+    let _fromOurBtn = false;
+    btn.addEventListener("contextmenu", () => { _fromOurBtn = true; }, true);
+
+    toolbarCtx.addEventListener("popupshowing", () => {
+      const show = _fromOurBtn;
+      _fromOurBtn = false;
+
+      doc.getElementById("zen-ws-sep").hidden = !show;
+
+      const uuid    = getActiveWorkspaceId();
+      const current = getWorkspaceDefault(uuid);
+
+      for (const opt of WS_OPTIONS) {
+        const item = doc.getElementById(opt.id);
+        item.hidden = !show;
+        if (show) item.setAttribute("checked", current === opt.value ? "true" : "false");
+      }
+    });
+  }
+
   // ── Init ──────────────────────────────────────────────────────────────
 
   function init() {
-    if (!window._zenCSToggleRegistered) {
-      window._zenCSToggleRegistered = true;
+    CustomizableUI.createWidget({
+      id:          WIDGET_ID,
+      type:        "button",
+      defaultArea: CustomizableUI.AREA_NAVBAR,
+      label:       "Website Appearance",
+      tooltiptext: "Toggle Website Appearance",
+      onCreated(btn) {
+        setTimeout(() => refreshBtn(btn), 0);
+        setupContextMenu(btn, btn.ownerDocument);
+      },
+      onCommand() {
+        const s = getState();
+        Services.prefs.setIntPref(PREF, s.next);
+        const uuid = getActiveWorkspaceId();
+        if (uuid) {
+          const sessionVal = s.next === 1 ? 1 : s.next === 0 ? 2 : 0;
+          _sessionState.set(uuid, sessionVal);
+        }
+        refreshAll();
+      },
+    });
 
-      CustomizableUI.createWidget({
-        id:          WIDGET_ID,
-        type:        "button",
-        defaultArea: CustomizableUI.AREA_NAVBAR,
-        label:       "Website Appearance",
-        tooltiptext: "Toggle Website Appearance",
-        onCreated(btn) {
-          refreshBtn(btn);
-        },
-        onCommand() {
-          const s = getState();
-          Services.prefs.setIntPref(PREF, s.next);
-          refreshAll();
-        },
-      });
+    gBrowser.tabContainer.addEventListener("TabSelect", onTabSelect);
 
-      // Live-update icon whenever any icon preference changes in Sine settings
-      for (const key of Object.values(P)) {
-        Services.prefs.addObserver(key, () => refreshAll());
-      }
+    for (const key of Object.values(P)) {
+      Services.prefs.addObserver(key, () => refreshAll());
     }
 
-    refreshBtn(document.getElementById(WIDGET_ID));
+    const initialId = getActiveWorkspaceId();
+    _lastWorkspaceId = initialId;
+    applyWorkspaceState(initialId);
   }
 
   if (document.readyState === "complete") {

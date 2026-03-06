@@ -7,14 +7,8 @@
     "defaultValue": 0,
     "placeholder": false,
     "options": [
-      {
-        "label": "Original",
-        "value": 0
-      },
-      {
-        "label": "Zen",
-        "value": 1
-      }
+      { "label": "Original", "value": 0 },
+      { "label": "Zen",      "value": 1 }
     ]
   },
 
@@ -26,14 +20,8 @@
     "defaultValue": 0,
     "placeholder": false,
     "options": [
-      {
-        "label": "Sparkle",
-        "value": 0
-      },
-      {
-        "label": "Sun",
-        "value": 1
-      }
+      { "label": "Sparkle", "value": 0 },
+      { "label": "Sun",     "value": 1 }
     ]
   },
 
@@ -90,6 +78,19 @@
       { "label": "Original",          "value": 1 },
       { "label": "Zen",               "value": 2 }
     ]
+  },
+
+  {
+    "type": "separator",
+    "label": "🌐 Workspace Appearance",
+    "margin": "15px 0 15px 0"
+  },
+
+  {
+    "type": "text",
+    "label": "Right-click the toggle button in the toolbar to set a default appearance per workspace in the context menu. The default restores automatically when you switch workspaces.",
+    "margin": "0 0 10px 0",
+    "size": "13px"
   },
 
   {

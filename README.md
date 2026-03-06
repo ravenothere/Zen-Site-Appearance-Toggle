@@ -27,14 +27,25 @@ The button can be placed anywhere: nav bar, sidebar, overflow menu — anywhere 
 
 ---
 
+## Workspace Appearance
+
+Right-click the toggle button to assign a default appearance to the current workspace in the context menu:
+
+- **Workspace: Auto** — follows your system theme (default)
+- **Workspace: Dark** — forces dark mode whenever you're in this workspace
+- **Workspace: Light** — forces light mode whenever you're in this workspace
+
+Left-clicking still works as a manual override anytime — it temporarily overrides the workspace default for the current session and resets on next browser start.
+
+---
+
 ## Installation
 
 ### Method 1 — Sine (recommended)
 
-[Sine](https://github.com/CosmoCreeper/Sine) is a mod manager for Zen/Firefox that installs mods in one click. 
+[Sine](https://github.com/CosmoCreeper/Sine) is a mod manager for Zen/Firefox that installs mods in one click.
 
-If you already have Sine installed, 
-find this mod in the [Sine store](https://sineorg.github.io/store/) and install it directly — no manual file copying needed.
+If you already have Sine installed, find this mod in [Sine store](https://sineorg.github.io/store/) and install it directly — no manual file copying needed.
 
 Sine also lets you customize the icons from its settings panel. You can:
 
@@ -140,6 +151,8 @@ To fully remove fx-autoconfig: delete `config.js` and `defaults/` from Zen's ins
 The fx-autoconfig version registers a toolbar widget using `UC_API.Utils.createWidget()`, and the Sine version uses `CustomizableUI.createWidget()` directly — both allow the button to be dragged to any toolbar position and appear in the Customize menu.
 
 The icon is set as a data URI SVG on the button's existing `<image class="toolbarbutton-icon">` element, using `context-fill` so it inherits the toolbar icon color automatically. No extra DOM elements are added — hover, sizing, and alignment are handled natively by the toolbarbutton.
+
+Workspace defaults are stored as a JSON map in a browser preference, keyed by workspace UUID. A `TabSelect` listener detects workspace changes and applies the saved default automatically. Left-click overrides are tracked in-memory per workspace for the session and take priority over the saved default until the browser restarts.
 
 On each click, it reads `window.matchMedia("(prefers-color-scheme: dark)")` to detect your system preference, then writes to `layout.css.prefers-color-scheme.content-override`:
 
